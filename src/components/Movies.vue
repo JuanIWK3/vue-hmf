@@ -1,6 +1,7 @@
 <script lang="ts">
-import api from "./api";
-import { defineComponent } from "vue";
+import api from '../api';
+import { defineComponent } from 'vue';
+import Loading from './Loading.vue';
 interface Movies {
   id: string;
   title: string;
@@ -11,21 +12,25 @@ interface Movies {
 }
 
 export default defineComponent({
-  name: "home",
+  name: 'home',
   data() {
+    const loading = true;
     const imageURL =
-      "https://homemoviefestivalbucket.s3.us-east-2.amazonaws.com/";
+      'https://homemoviefestivalbucket.s3.us-east-2.amazonaws.com/';
 
     const moviesList: Movies[] = [];
-    return { moviesList, imageURL };
+    return { moviesList, imageURL, loading };
   },
   methods: {
-    getData() {
-      api.get("movies").then((res) => {
-        this.moviesList = res.data;
-        console.log(this.moviesList);
-      });
+    async getData() {
+      const res = await api.get('/movies');
+      this.moviesList = res.data;
+      this.loading = false;
+      console.log('ready');
     },
+  },
+  components: {
+    Loading,
   },
   mounted() {
     this.getData();
@@ -35,23 +40,34 @@ export default defineComponent({
 
 <template>
   <div class="background">
-    <div class="container">
+    <div v-if="loading" class="loading">
+      <Loading />
+    </div>
+    <div class="container" v-if="!loading">
       <div class="movie" v-for="(movie, index) in moviesList" :key="index">
-        <figure>
-          <img :src="imageURL + movie.image" alt="" />
-        </figure>
-        <div class="title">
-          {{ movie.title }}
-        </div>
+        <router-link :to="`/movies/${index}`">
+          <figure>
+            <img :src="imageURL + movie.image" alt="" />
+          </figure>
+          <div class="title">
+            {{ movie.title }}
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import "../styles/variables.scss";
+@import '../styles/variables.scss';
 button {
   padding: 8px;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 64px);
 }
 .container {
   display: grid;

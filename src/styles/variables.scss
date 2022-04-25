@@ -2,3 +2,22 @@ $primary-color: #111;
 $primary-text-color: #fff;
 $secondary-color: rgb(0, 187, 255);
 $border-radius: 0.4rem;
+
+button {
+  width: max-content;
+  background-color: transparent;
+  padding: 8px;
+  border: none;
+  border-radius: 0.3rem;
+  outline: none;
+  color: $secondary-color;
+  cursor: pointer;
+
+  &.secondary {
+    background-color: $secondary-color;
+    color: $primary-text-color;
+  }
+  &:hover {
+    color: $primary-text-color;
+  }
+}
