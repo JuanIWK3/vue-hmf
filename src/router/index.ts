@@ -4,8 +4,6 @@ import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
 import Movie from '../pages/Movie.vue';
 import Profile from '../pages/Profile.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
