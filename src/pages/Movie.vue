@@ -5,7 +5,7 @@ import IMovie from '../interfaces';
 export default defineComponent({
   name: 'movie',
   data() {
-    const movie: IMovie | null = null;
+    const movie = {} as IMovie;
     const imageURL =
       'https://homemoviefestivalbucket.s3.us-east-2.amazonaws.com/';
     const loading = true;
