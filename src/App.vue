@@ -24,7 +24,7 @@ body {
   max-width: 100vw;
   background-image: url('https://wallpapersmug.com/large/d853d8/violet-bend-abstract-dark.jpg');
   background-position: center;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(60px);
   color: $primary-text-color;
   background-color: aqua;
   font-family: 'Inter', sans-serif;

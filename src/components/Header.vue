@@ -1,33 +1,36 @@
 <script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-  name: 'navbar',
-  data() {
-    const isHamOpen = false;
+import { computed, onMounted, onUpdated, ref } from 'vue';
+import { useStore } from 'vuex';
+
+export default {
+  setup() {
+    const store = useStore();
+    const isLogged = computed(() => store.state.auth);
+    const user = computed(() => store.state.user);
+    const isMenuOpen = ref(false);
+    const toggleMenu = () => {
+      isMenuOpen.value = !isMenuOpen.value;
+    };
+
+    const signOut = () => {
+      store.dispatch('signOut');
+    };
+
     return {
       moviesList: [],
-      isHamOpen,
+      isLogged,
+      isMenuOpen,
+      user,
+      toggleMenu,
+      signOut,
     };
   },
-  methods: {
-    toggleHam() {
-      this.isHamOpen = !this.isHamOpen;
-    },
-  },
-});
+};
 </script>
 
 <template>
   <div class="container">
     <div class="wrapper">
-      <div
-        :class="isHamOpen ? 'active hamburger' : 'hamburger not-active'"
-        @click="toggleHam()"
-      >
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
       <router-link to="/">
         <div class="logo">
           <p>HMF</p>
@@ -38,17 +41,7 @@ export default defineComponent({
       <img src="../assets/search.svg" alt="magnifying glass" />
       <input type="text" />
     </form>
-    <div
-      class="user"
-      v-if="$route.path !== '/login' && $route.path !== '/signup'"
-    >
-      <router-link to="/login">
-        <button>Log In</button>
-      </router-link>
-      <router-link to="/signup">
-        <button class="secondary">Sign Up</button>
-      </router-link>
-    </div>
+
     <router-link
       to="/"
       v-if="$route.path == '/login' || $route.path == '/signup'"
@@ -57,6 +50,46 @@ export default defineComponent({
         <img id="close" src="../assets/close.svg" alt="close" />
       </div>
     </router-link>
+
+    <button
+      @click="toggleMenu()"
+      class="user"
+      v-if="$route.path !== '/login' && $route.path !== '/signup'"
+    >
+      <img src="../assets/user.svg" alt="" />
+      <div :class="isMenuOpen ? 'menu' : 'close menu'">
+        <div class="option" v-if="!isLogged">
+          <router-link to="/login">
+            <div>Sign In</div>
+          </router-link>
+        </div>
+        <div class="option" v-if="!isLogged">
+          <router-link to="/signup">
+            <div>Sign Up</div>
+          </router-link>
+        </div>
+        <div class="option" v-if="isLogged">
+          <router-link to="/profile">
+            <div>
+              <img src="../assets/user.svg" alt="" />
+              <p>Profile</p>
+            </div>
+          </router-link>
+        </div>
+        <div
+          class="option"
+          v-if="isLogged"
+          @click="signOut()"
+          id="logout"
+          :class="isLogged && 'none'"
+        >
+          <div><img src="../assets/logout.svg" alt="" />Sign Out</div>
+          <div>
+            {{ user.email }}
+          </div>
+        </div>
+      </div>
+    </button>
   </div>
 </template>
 
@@ -69,7 +102,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba($primary-color, 0.5);
+  background: rgba(#000, 1);
   position: relative;
 
   .wrapper {
@@ -82,7 +115,7 @@ export default defineComponent({
     cursor: pointer;
     margin-right: 16px;
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       display: block;
     }
 
@@ -108,12 +141,14 @@ export default defineComponent({
 
     p {
       font-size: 1.5em;
-      font-family: Homemade Apple, cursive;
       margin-top: 10px;
     }
   }
 
   form {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     width: 100%;
@@ -124,8 +159,8 @@ export default defineComponent({
     display: flex;
     border-bottom: 1px solid rgba($secondary-color, 0.5);
 
-    @media (max-width: 500px) {
-      margin: 8px 0px;
+    @media (max-width: 700px) {
+      width: 50%;
     }
 
     img {
@@ -144,7 +179,7 @@ export default defineComponent({
     }
   }
 
-  .user {
+  .sign {
     margin-left: 8px;
     display: flex;
     align-items: center;
@@ -153,7 +188,7 @@ export default defineComponent({
     border-radius: 0.3rem;
     padding: 8px;
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       display: none;
     }
   }
@@ -181,6 +216,67 @@ export default defineComponent({
       background-color: rgba($secondary-color, 0.7);
     }
   }
+
+  .user {
+    width: 40px;
+    height: 40px;
+    background: $secondary-color;
+    border-radius: 50%;
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+
+      position: absolute;
+      right: 8px;
+      top: 70px;
+      padding: 8px 0;
+
+      border-radius: $border-radius;
+      border: 1px solid #111;
+
+      background: rgba(45, 45, 45, 0.9);
+      backdrop-filter: blur(4px);
+      animation: expand 0.2s forwards;
+
+      .option {
+        width: 160px;
+        margin: 0 8px;
+        cursor: pointer;
+        color: $primary-text-color;
+        border-radius: $border-radius;
+        text-align: left;
+
+        div {
+          display: flex;
+          align-items: center;
+          padding: 8px 10px;
+        }
+
+        img {
+          margin-right: 10px;
+        }
+
+        &:hover {
+          background-color: rgba($secondary-color, 0.7);
+        }
+      }
+
+      #logout {
+        display: flex;
+        flex-direction: column;
+
+        height: 64px;
+
+        div {
+          display: flex;
+        }
+      }
+      &.close {
+        display: none;
+      }
+    }
+  }
 }
 
 @keyframes rotate90 {
@@ -190,6 +286,15 @@ export default defineComponent({
 
   100% {
     transform: rotate(90deg);
+  }
+}
+@keyframes expand {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 </style>

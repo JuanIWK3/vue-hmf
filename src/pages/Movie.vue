@@ -14,7 +14,6 @@ export default defineComponent({
   methods: {
     async getMovies() {
       const res = await api.get(`/movies/id/${this.$route.params.id}`);
-      console.log(res);
 
       this.loading = false;
       this.movie = res.data;

@@ -22,7 +22,6 @@ export default defineComponent({
   methods: {
     async signup(event: Event) {
       event.preventDefault();
-      console.log(event);
 
       try {
         await api.post('/users', {
@@ -30,6 +29,8 @@ export default defineComponent({
           email: this.emailRef,
           password: this.passwordRef,
         });
+
+        this.$router.push('/login');
       } catch (error) {
         alert('Erro ao cadastrar usuário');
       }
@@ -142,7 +143,7 @@ export default defineComponent({
       margin: 8px 0 16px 0;
       color: $primary-text-color;
       background: transparent;
-      background: rgba($primary-color, 0.3);
+      background: rgba($primary-color, 0.5);
       border: none;
       border-radius: $border-radius;
       filter: brightness(1.5);

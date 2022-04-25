@@ -1,8 +1,12 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import api from '../api';
 export default defineComponent({
   name: 'login',
   data() {
+    const store = useStore();
+
     const passwordRef = '';
     const hasMinLength = false;
     return {
@@ -13,9 +17,25 @@ export default defineComponent({
       hasUpperCase: false,
       hasLowerCase: false,
       hasNumber: false,
+      store,
     };
   },
   methods: {
+    async login(event: Event) {
+      event.preventDefault();
+      try {
+        const res = await api.post('/sessions', {
+          email: this.emailRef,
+          password: this.passwordRef,
+        });
+
+        this.store.dispatch('signIn', res.data);
+
+        this.$router.push('/');
+      } catch (error) {
+        alert('Erro ao logar');
+      }
+    },
     validate() {
       const pass = this.passwordRef;
       const email = this.emailRef;
@@ -61,7 +81,7 @@ export default defineComponent({
 
 <template>
   <div class="container">
-    <form>
+    <form @submit="login($event)">
       <div class="title">Log in to Home Movie Festival</div>
       <label for="email">Email</label>
       <input

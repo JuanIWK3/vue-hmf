@@ -26,7 +26,6 @@ export default defineComponent({
       const res = await api.get('/movies');
       this.moviesList = res.data;
       this.loading = false;
-      console.log('ready');
     },
   },
   components: {
