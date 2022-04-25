@@ -45,7 +45,7 @@ export default defineComponent({
     </div>
     <div class="container" v-if="!loading">
       <div class="movie" v-for="(movie, index) in moviesList" :key="index">
-        <router-link :to="`/movies/${index}`">
+        <router-link :to="`/movies/${movie.id}`">
           <figure>
             <img :src="imageURL + movie.image" alt="" />
           </figure>

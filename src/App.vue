@@ -22,8 +22,9 @@ body {
   background-size: cover;
   min-height: 100vh;
   max-width: 100vw;
-  background-image: url('https://images2.alphacoders.com/521/thumb-1920-521477.jpg');
-  backdrop-filter: blur(100px);
+  background-image: url('https://wallpapersmug.com/large/d853d8/violet-bend-abstract-dark.jpg');
+  background-position: center;
+  backdrop-filter: blur(20px);
   color: $primary-text-color;
   background-color: aqua;
   font-family: 'Inter', sans-serif;

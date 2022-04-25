@@ -1,13 +1,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import api from '../api';
 export default defineComponent({
   name: 'signup',
   data() {
     const passwordRef = '';
+    const emailRef = '';
+    const usernameRef = '';
     const hasMinLength = false;
     return {
       passwordRef,
-      emailRef: '',
+      emailRef,
+      usernameRef,
       errorRef: '',
       hasMinLength,
       hasUpperCase: false,
@@ -16,6 +20,20 @@ export default defineComponent({
     };
   },
   methods: {
+    async signup(event: Event) {
+      event.preventDefault();
+      console.log(event);
+
+      try {
+        await api.post('/users', {
+          name: this.usernameRef,
+          email: this.emailRef,
+          password: this.passwordRef,
+        });
+      } catch (error) {
+        alert('Erro ao cadastrar usuário');
+      }
+    },
     validate() {
       const pass = this.passwordRef;
       const email = this.emailRef;
@@ -61,8 +79,10 @@ export default defineComponent({
 
 <template>
   <div class="container">
-    <form>
+    <form @submit="signup($event)">
       <div class="title">Join</div>
+      <label for="username">User Name</label>
+      <input v-model="usernameRef" type="text" placeholder="User1" required />
       <label for="email">Email</label>
       <input
         v-model="emailRef"
@@ -118,7 +138,7 @@ export default defineComponent({
     }
 
     input {
-      padding: 8px;
+      padding: 16px;
       margin: 8px 0 16px 0;
       color: $primary-text-color;
       background: transparent;

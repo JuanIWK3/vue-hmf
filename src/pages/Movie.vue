@@ -13,9 +13,11 @@ export default defineComponent({
   },
   methods: {
     async getMovies() {
-      const res = await api.get('/movies');
+      const res = await api.get(`/movies/id/${this.$route.params.id}`);
+      console.log(res);
+
       this.loading = false;
-      this.movie = res.data[parseInt(this.$route.params.id as string)];
+      this.movie = res.data;
     },
   },
   mounted() {
@@ -30,6 +32,9 @@ export default defineComponent({
       <div class="title">{{ movie.title }}</div>
       <img :src="imageURL + movie.image" alt="movie thumb" />
       <div class="description">{{ movie.description }}</div>
+      <a target="blank" :href="movie.magnet">
+        <button class="secondary">Magnet</button>
+      </a>
     </div>
     <div v-if="loading">loading</div>
     <div v-if="!loading && !movie">Erro ao carregar filme</div>
@@ -37,6 +42,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+@import '../styles/variables';
 .container {
   margin-top: 36px;
   display: flex;
@@ -59,7 +65,14 @@ export default defineComponent({
     }
     .description {
       font-size: 16px;
-      margin-top: 16px;
+      margin: 16px 0;
+    }
+    img {
+      width: 250px;
+      height: 250px;
+      margin-bottom: 16px;
+      object-fit: cover;
+      border-radius: $border-radius;
     }
   }
 }
