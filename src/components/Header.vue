@@ -46,7 +46,7 @@ export default {
     <div class="wrapper">
       <router-link to="/">
         <div class="logo">
-          <p>HMF</p>
+          <img src="../assets/hmf-logo.png" alt="" />
         </div>
       </router-link>
     </div>
@@ -156,9 +156,8 @@ export default {
     cursor: pointer;
     margin-right: 16px;
 
-    p {
-      font-size: 1.5em;
-      margin-top: 10px;
+    img {
+      height: 80px;
     }
   }
 

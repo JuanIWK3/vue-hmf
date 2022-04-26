@@ -43,4 +43,9 @@ a {
   color: unset;
   text-decoration: none;
 }
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
 </style>

@@ -18,8 +18,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../styles/variables.scss';
 .loading {
-  position: absolute;
-
+  display: flex;
   .dot {
     width: 20px;
     height: 20px;

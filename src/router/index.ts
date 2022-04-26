@@ -20,9 +20,9 @@ const router = createRouter({
   routes,
 });
 
-const isLogged = localStorage.getItem('auth') == 'true';
-
 router.beforeEach(async (to) => {
+  const isLogged = localStorage.getItem('auth') == 'true';
+
   if (!isLogged && to.name == 'Profile') {
     return '/login';
   }

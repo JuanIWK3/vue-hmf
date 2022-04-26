@@ -16,8 +16,6 @@ export default {
       'https://homemoviefestivalbucket.s3.us-east-2.amazonaws.com/';
 
     const searchMovies = async (query: string) => {
-      console.log('searching');
-
       try {
         const res = await api.get('/movies');
         let filteredMovies = res.data;
@@ -29,16 +27,13 @@ export default {
         store.dispatch('setSearchMovies', filteredMovies);
 
         loading.value = false;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     watch(
       () => router.currentRoute.value.query,
       () => {
         query.q = router.currentRoute.value.query.q;
-        console.log(query.q);
 
         searchMovies(query.q as string);
       }
