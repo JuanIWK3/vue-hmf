@@ -1,10 +1,15 @@
 import { createStore } from 'vuex';
+import IMovie from '../interfaces';
 const store = createStore({
   state: {
     auth: localStorage.getItem('auth') == 'true' || false,
     user: JSON.parse(localStorage.getItem('user')!) || {},
+    searchMovies: [] as IMovie[],
   },
   mutations: {
+    SET_SEARCH_MOVIES(state, payload: IMovie[]) {
+      state.searchMovies = payload;
+    },
     SIGN_IN(state, payload) {
       state.auth = true;
       state.user = payload.user;
@@ -22,6 +27,9 @@ const store = createStore({
     },
   },
   actions: {
+    setSearchMovies({ commit }, payload: IMovie[]) {
+      commit('SET_SEARCH_MOVIES', payload);
+    },
     signIn({ commit }, payload) {
       commit('SIGN_IN', payload);
     },

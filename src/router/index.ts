@@ -4,6 +4,7 @@ import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
 import Movie from '../pages/Movie.vue';
 import Profile from '../pages/Profile.vue';
+import Search from '../pages/Search.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -11,6 +12,7 @@ const routes = [
   { path: '/signup', name: 'Signup', component: Signup },
   { path: '/movies/:id', name: 'Movie', component: Movie },
   { path: '/profile', name: 'Profile', component: Profile },
+  { path: '/search', name: 'Search', component: Search },
 ];
 
 const router = createRouter({

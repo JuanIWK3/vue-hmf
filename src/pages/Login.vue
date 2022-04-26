@@ -38,7 +38,6 @@ export default defineComponent({
     },
     validate() {
       const pass = this.passwordRef;
-      const email = this.emailRef;
       if (pass.length >= 6) {
         this.hasMinLength = true;
       } else {

@@ -1,13 +1,17 @@
 <script>
 import { computed, onMounted, onUpdated, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 export default {
   setup() {
     const store = useStore();
+    const router = useRouter();
     const isLogged = computed(() => store.state.auth);
     const user = computed(() => store.state.user);
     const isMenuOpen = ref(false);
+    const query = ref('');
+
     const toggleMenu = () => {
       isMenuOpen.value = !isMenuOpen.value;
     };
@@ -16,13 +20,22 @@ export default {
       store.dispatch('signOut');
     };
 
+    const search = () => {
+      if (!query.value) {
+        return;
+      }
+      router.push({ name: 'Search', query: { q: query.value } });
+    };
+
     return {
       moviesList: [],
       isLogged,
       isMenuOpen,
       user,
+      query,
       toggleMenu,
       signOut,
+      search,
     };
   },
 };
@@ -37,9 +50,13 @@ export default {
         </div>
       </router-link>
     </div>
-    <form v-if="$route.path !== '/login' && $route.path !== '/signup'">
+
+    <form
+      @keypress.enter="search()"
+      v-if="$route.path !== '/login' && $route.path !== '/signup'"
+    >
       <img src="../assets/search.svg" alt="magnifying glass" />
-      <input type="text" />
+      <input type="text" v-model="query" />
     </form>
 
     <router-link

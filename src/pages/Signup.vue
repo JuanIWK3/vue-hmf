@@ -1,22 +1,28 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import api from '../api';
+import { validatePassword } from '../utils/validatePassword';
 export default defineComponent({
   name: 'signup',
   data() {
     const passwordRef = '';
     const emailRef = '';
     const usernameRef = '';
-    const hasMinLength = false;
+
+    const { hasMinLength, hasUpperCase, hasLowerCase, hasNumber } =
+      validatePassword({
+        password: passwordRef,
+      });
+
     return {
       passwordRef,
       emailRef,
       usernameRef,
       errorRef: '',
       hasMinLength,
-      hasUpperCase: false,
-      hasLowerCase: false,
-      hasNumber: false,
+      hasUpperCase,
+      hasLowerCase,
+      hasNumber,
     };
   },
   methods: {
@@ -36,43 +42,15 @@ export default defineComponent({
       }
     },
     validate() {
-      const pass = this.passwordRef;
-      const email = this.emailRef;
-      if (pass.length >= 6) {
-        this.hasMinLength = true;
-      } else {
-        this.hasMinLength = false;
-      }
-      if (pass.match(/[\d]/)) {
-        this.hasNumber = true;
-      } else {
-        this.hasNumber = false;
-      }
-      if (pass.match(/[A-Z]/)) {
-        this.hasUpperCase = true;
-      } else {
-        this.hasUpperCase = false;
-      }
-      if (pass.match(/[a-z]/)) {
-        this.hasLowerCase = true;
-      } else {
-        this.hasLowerCase = false;
-      }
-      if (
-        this.hasMinLength &&
-        this.hasUpperCase &&
-        this.hasLowerCase &&
-        this.hasNumber
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
-  watch: {
-    passwordRef: function () {
-      this.validate();
+      const { hasMinLength, hasUpperCase, hasLowerCase, hasNumber } =
+        validatePassword({
+          password: this.passwordRef,
+        });
+
+      this.hasMinLength = hasMinLength;
+      this.hasUpperCase = hasUpperCase;
+      this.hasLowerCase = hasLowerCase;
+      this.hasNumber = hasNumber;
     },
   },
 });
