@@ -59,7 +59,7 @@ export default defineComponent({
 <template>
   <div class="container">
     <form @submit="signup($event)">
-      <div class="title">Join</div>
+      <div class="title">Join us</div>
       <label for="username">User Name</label>
       <input v-model="usernameRef" type="text" placeholder="User1" required />
       <label for="email">Email</label>

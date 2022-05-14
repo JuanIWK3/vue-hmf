@@ -11,6 +11,9 @@
       <div class="movies">
         <h2>Your Movies</h2>
         <Loading v-if="loading" />
+        <router-link to="/movies/add">
+          <button class="add-movie">Add Movie</button>
+        </router-link>
         <div class="empty" v-if="!moviesList.length">
           You don't have any movies yet.
         </div>
@@ -110,8 +113,7 @@ export default {
     border-top: 1px solid $secondary-color;
 
     h2 {
-      margin-top: 4px;
-      margin-bottom: 16px;
+      margin: 8px 0;
     }
     .loading {
       margin: 20px 0;
